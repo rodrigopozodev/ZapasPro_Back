@@ -9,7 +9,7 @@ const app = express();
 
 // Middleware para analizar el cuerpo de las solicitudes en formato JSON
 app.use(express.json());
-app.use(bodyParser.json()); // No es estrictamente necesario usar body-parser, ya que express.json() ya lo maneja
+
 
 // Rutas de la API
 app.use('/api/auth', authRoutes); // Ruta para autenticación
