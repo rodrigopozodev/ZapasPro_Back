@@ -2,6 +2,7 @@ import { User } from '../models/user.model'; // Importa el modelo de usuario
 import bcrypt from 'bcrypt'; // Importa bcrypt para encriptar contraseñas
 import { Request, Response } from 'express'; // Importa Request y Response de Express
 
+
 // Define el tipo para el rol
 type UserRole = 'client' | 'admin'; // Define los roles de usuario permitidos
 
