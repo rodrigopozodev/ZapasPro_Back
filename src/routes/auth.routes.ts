@@ -1,15 +1,18 @@
-import express from 'express'; // Importa el framework Express
-import { registerUser, loginUser, getAllUsers } from '../services/auth.service'; // Importa los controladores de servicio
+import express from 'express';
+import { registerUser, loginUser, getAllUsers, verifyEmail } from '../services/auth.service';
 
-const router = express.Router(); // Crea una nueva instancia del enrutador de Express
+const router = express.Router();
 
 // Ruta para registrar un nuevo usuario
-router.post('/register', registerUser); // Llama al controlador registerUser al recibir una solicitud POST en '/register'
+router.post('/register', registerUser);
 
 // Ruta para iniciar sesión
-router.post('/login', loginUser); // Llama al controlador loginUser al recibir una solicitud POST en '/login'
+router.post('/login', loginUser);
+
+// Ruta para verificar el correo electrónico
+router.get('/verify', verifyEmail);
 
 // Ruta para obtener todos los usuarios
-router.get('/users', getAllUsers); // Llama al controlador getAllUsers al recibir una solicitud GET en '/users'
+router.get('/users', getAllUsers);
 
-export default router; // Exporta el enrutador para su uso en otras partes de la aplicación
+export default router;

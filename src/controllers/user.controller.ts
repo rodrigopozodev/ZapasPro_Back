@@ -3,16 +3,15 @@ import { User } from '../models/user.model'; // Importamos el modelo de usuario
 import bcrypt from 'bcrypt'; // Importamos bcrypt para la encriptación de contraseñas
 
 // Controlador para crear un nuevo usuario
-// CAMBIO FUTURO: Si se añaden más campos al modelo de usuario (como email, fecha de nacimiento), actualiza aquí.
 export const createUser = async (req: Request, res: Response) => {
-  const { username, password, role } = req.body; // Obtenemos los datos del cuerpo de la solicitud
+  const { firstName, lastName, email, password, role } = req.body; // Obtenemos los datos del cuerpo de la solicitud
 
   try {
     // Encriptar la contraseña con bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
     
     // Crear un nuevo usuario en la base de datos
-    const newUser = await User.create({ username, password: hashedPassword, role });
+    const newUser = await User.create({ firstName, lastName, email, password: hashedPassword, role });
 
     // Devolver respuesta exitosa con el nuevo usuario creado
     res.status(201).json({ success: true, user: newUser });
@@ -26,7 +25,6 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 // Controlador para obtener todos los usuarios
-// CAMBIO FUTURO: Si se necesita paginación o filtrado (por rol, por ejemplo), se debe ajustar este método.
 export const getUsers = async (req: Request, res: Response) => {
   try {
     // Buscar todos los usuarios en la base de datos
@@ -45,13 +43,12 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 // Controlador para iniciar sesión
-// CAMBIO FUTURO: Si se añade soporte para autenticación multifactor, ajustar aquí.
 export const loginUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body; // Obtenemos los datos del cuerpo de la solicitud
+  const { email, password } = req.body; // Obtenemos los datos del cuerpo de la solicitud
 
   try {
-    // Buscar el usuario en la base de datos por nombre de usuario
-    const user = await User.findOne({ where: { username } });
+    // Buscar el usuario en la base de datos por correo electrónico
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
       // Si el usuario no existe, responder con un error
@@ -71,7 +68,9 @@ export const loginUser = async (req: Request, res: Response) => {
       success: true,
       user: {
         id: user.id,
-        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
         role: user.role,
       },
     });
