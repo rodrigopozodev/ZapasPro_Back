@@ -16,7 +16,8 @@ export const verifyRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     // Verificar si el usuario está presente y si su rol está en la lista de roles permitidos
     if (!req.user || !roles.includes(req.user.role)) {
-      return res.sendStatus(403); // Responder con un error de acceso prohibido
+      return res.status(403).json({ message: 'Acceso prohibido: rol no permitido' });
+
     }
     next(); // Continuar con el siguiente middleware o controlador
   };

@@ -45,8 +45,9 @@ User.init({
   },
   verified: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false, // Asegúrate de inicializar como no verificado
-  },
+    defaultValue: false, // Inicialmente no verificado
+    allowNull: false // Asegura que no pueda ser nulo
+},
 }, {
   sequelize,
   modelName: 'User',

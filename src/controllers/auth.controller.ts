@@ -1,53 +1,98 @@
-import { Request, Response } from 'express'; // Importamos tipos para tipar las solicitudes y respuestas
-import bcrypt from 'bcrypt'; // Librería para encriptar y comparar contraseñas
-import { User } from '../models/user.model'; // Modelo de usuario de la base de datos
+import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
+import { User } from '../models/user.model';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-// Controlador para registrar un nuevo usuario
-export const register = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password, role } = req.body; // Obtenemos los datos del cuerpo de la solicitud
+// Cargar las variables de entorno
+dotenv.config();
+
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: false, // true para 465, false para 587
+  auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+  },
+  tls: {
+      rejectUnauthorized: false, // Esto puede ayudar a evitar problemas con el certificado, pero no es recomendable para producción
+  },
+});
+
+
+
+// Función para registrar un nuevo usuario
+export const registerUser = async (req: Request, res: Response) => {
+  const { firstName, lastName, email, password, role } = req.body;
+
+  // Validar el rol
+  const allowedRoles = ['client', 'admin'];
+  if (!allowedRoles.includes(role)) {
+      return res.status(400).json({ message: 'Rol no válido' });
+  }
 
   try {
-    // Encriptar la contraseña usando bcrypt con un salt de 10 rondas
-    const hashedPassword = await bcrypt.hash(password, 10);
+      // Verifica si el correo ya existe
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+          return res.status(400).json({ message: 'Usuario ya existe' });
+      }
 
-    // Crear nuevo usuario con el rol especificado
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      // Solo aceptamos los roles 'admin' o 'client', cualquier otro será 'client' por defecto.
-      role: (role === 'admin' || role === 'client') ? role : 'client',
-    });
+      // Verificar la complejidad de la contraseña
+      if (password.length < 8) {
+          return res.status(400).json({ message: 'La contraseña debe tener al menos 8 caracteres.' });
+      }
 
-    // Devolver una respuesta de éxito con el ID del nuevo usuario
-    return res.status(201).json({ message: 'Usuario creado', userId: newUser.id });
+      // Hashea la contraseña antes de guardar
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Crea el nuevo usuario
+      const newUser = await User.create({
+          firstName,
+          lastName,
+          email,
+          password: hashedPassword,
+          role,
+      });
+
+      // Configuración del correo electrónico
+      const mailOptions = {
+          from: process.env.MAIL_USER,
+          to: email,
+          subject: 'Bienvenido a ZapasPro',
+          text: 'Gracias por registrarte en ZapasPro. ¡Estamos encantados de tenerte con nosotros!',
+      };
+
+      // Enviar el correo electrónico
+      await transporter.sendMail(mailOptions);
+      console.log('Correo de bienvenida enviado a:', email); // Confirmación del envío
+
+      return res.status(201).json({ message: 'Usuario registrado con éxito', user: newUser });
   } catch (error) {
-    // Si ocurre un error, devolvemos una respuesta de error genérica
-    return res.status(500).json({ message: 'Error al crear usuario', error });
+      console.error('Error al registrar el usuario:', error);
+      return res.status(500).json({ message: 'Error en el servidor', error });
   }
 };
 
+
 // Controlador para iniciar sesión
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body; // Obtenemos las credenciales del cuerpo de la solicitud
+  const { email, password } = req.body;
 
   try {
-    // Buscar usuario por correo electrónico en la base de datos
     const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' }); // Si no existe, devolvemos un error
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-    // Comparar la contraseña ingresada con la contraseña almacenada usando bcrypt
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Credenciales inválidas' }); // Si no coinciden, devolvemos un error
+    if (!isMatch) return res.status(401).json({ message: 'Credenciales inválidas' });
 
-    // Si las credenciales son correctas, devolvemos el usuario, excluyendo la contraseña
     return res.json({ 
       message: 'Inicio de sesión exitoso', 
-      user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role } // Enviamos los datos del usuario sin la contraseña
+      user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role }
     });
   } catch (error) {
-    // Si ocurre un error, devolvemos una respuesta de error genérica
-    return res.status(500).json({ message: 'Error al iniciar sesión', error });
+    console.error('Error al iniciar sesión:', error);
+    return res.status(500).json({ message: 'Error al iniciar sesión' });
   }
 };

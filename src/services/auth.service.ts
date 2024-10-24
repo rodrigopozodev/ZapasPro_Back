@@ -13,52 +13,41 @@ type UserRole = 'client' | 'admin'; // Define los roles de usuario permitidos
 
 // Función para registrar un nuevo usuario
 export const registerUser = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password, role }: { 
-    firstName: string; 
-    lastName: string; 
-    email: string; 
-    password: string; 
-    role?: UserRole 
-  } = req.body;
+  const { firstName, lastName, email, password, role } = req.body;
 
-  // Verifica que los datos requeridos estén presentes
+  // Validar campos requeridos
   if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({ message: 'Faltan datos requeridos' });
+    return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
-  // Comprueba si el usuario ya existe
-  const existingUser = await User.findOne({ where: { email } });
-  if (existingUser) {
-    return res.status(400).json({ message: 'El usuario ya existe' });
+  // Validar el rol
+  const allowedRoles: UserRole[] = ['client', 'admin'];
+  if (role && !allowedRoles.includes(role)) {
+    return res.status(400).json({ message: 'Rol no válido' });
   }
 
-  // Encripta la contraseña
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = await User.create({
-    firstName,
-    lastName,
-    email,
-    password: hashedPassword,
-    role: role || 'client',
-  });
+  try {
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Usuario ya existe' });
+    }
 
-  // Generar un token de verificación
-  const secret = process.env.JWT_SECRET; // Obtener la clave secreta
-  if (!secret) {
-    return res.status(500).json({ message: 'Se produjo un error en el servidor' });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      role: role || 'client',
+    });
+
+    // Puedes enviar un correo de verificación aquí si es necesario
+
+    return res.status(201).json({ message: 'Usuario registrado con éxito', user: newUser });
+  } catch (error) {
+    console.error('Error al registrar el usuario:', error);
+    return res.status(500).json({ message: 'Error en el servidor', error });
   }
-
-  const verificationToken = jwt.sign({ email: newUser.email }, secret, { expiresIn: '1h' });
-
-  // Enviar un correo de verificación al usuario registrado
-  const subject = 'Verificación de correo electrónico';
-  const text = `Hola ${newUser.firstName}, por favor verifica tu correo electrónico haciendo clic en el siguiente enlace: 
-  http://localhost:3000/api/auth/verify?token=${verificationToken}`;
-  
-  await sendEmail(newUser.email, subject, text); // Enviar correo
-
-  // Devuelve información del nuevo usuario
-  return res.json({ id: newUser.id, email: newUser.email, role: newUser.role });
 };
 
 // Función para iniciar sesión

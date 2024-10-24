@@ -5,22 +5,30 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
-  secure: false, // Cambiar a true si estás usando el puerto 465
+  host: process.env.SMTP_HOST, // Asegúrate de que esté configurado como 'smtp.gmail.com'
+  port: Number(process.env.SMTP_PORT), // Asegúrate de que esté configurado como 587
+  secure: false, // true para 465, false para 587
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: process.env.SMTP_USER, // Asegúrate de que este sea tu correo de Gmail
+    pass: process.env.SMTP_PASS, // Asegúrate de que esto sea tu contraseña de aplicación
+  },
+  tls: {
+    rejectUnauthorized: false, // Esto puede ayudar a evitar problemas con el certificado
   },
 });
 
 // Función para probar el envío de correo
 const testEmail = async () => {
+  const verificationToken = 'tokenDeVerificacion'; // Cambia esto por un token real
+  const userEmail = 'rodrigopozosanchez@gmail.com'; // Cambia esto a tu correo personal para la prueba
+
   const mailOptions = {
-    from: process.env.MAIL_FROM,
-    to: 'rodrigopozosanchez@gmail.com', // Cambia esto a tu correo personal para la prueba
-    subject: 'Prueba de envío de correo',
-    text: 'Este es un mensaje de prueba desde Nodemailer.',
+    from: process.env.MAIL_FROM, // Asegúrate de que esté configurado en tu .env
+    to: userEmail,
+    subject: 'Verifica tu cuenta',
+    html: `<p>Hola,</p>
+           <p>Por favor, verifica tu cuenta haciendo clic en el siguiente enlace:</p>
+           <a href="${process.env.FRONTEND_URL}/verify?token=${verificationToken}">Verificar cuenta</a>`,
   };
 
   try {

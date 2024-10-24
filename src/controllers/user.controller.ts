@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'; // Importamos tipos de Express para las solicitudes y respuestas
 import { User } from '../models/user.model'; // Importamos el modelo de usuario
 import bcrypt from 'bcrypt'; // Importamos bcrypt para la encriptación de contraseñas
+import jwt from 'jsonwebtoken'; // Importamos jsonwebtoken para la creación de tokens
+import { sendVerificationEmail } from '../config/mailer'; // Importamos la función para enviar correos
 
 // Controlador para crear un nuevo usuario
 export const createUser = async (req: Request, res: Response) => {
@@ -13,8 +15,14 @@ export const createUser = async (req: Request, res: Response) => {
     // Crear un nuevo usuario en la base de datos
     const newUser = await User.create({ firstName, lastName, email, password: hashedPassword, role });
 
+    // Generar token de verificación
+    const verificationToken = jwt.sign({ email: newUser.email }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+
+    // Enviar correo de verificación
+    await sendVerificationEmail(newUser.email, verificationToken);
+
     // Devolver respuesta exitosa con el nuevo usuario creado
-    res.status(201).json({ success: true, user: newUser });
+    res.status(201).json({ success: true, message: 'Usuario creado. Por favor, verifique su correo.', user: newUser });
   } catch (error: any) { // Manejo de errores
     res.status(500).json({
       success: false,
@@ -79,7 +87,7 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error al iniciar sesión',
-      error: error.message || 'Error desconocido',
+      error: 'Error interno del servidor', // No revelar el error específico
     });
   }
 };
