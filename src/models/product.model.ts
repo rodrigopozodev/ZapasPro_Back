@@ -1,57 +1,72 @@
-import { DataTypes, Model } from 'sequelize'; // Importamos DataTypes y Model de Sequelize
-import { sequelize } from '../config/database'; // Importamos la instancia de sequelize
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from '../config/database';
 
-// Define la interfaz para las propiedades del producto
 export interface ProductAttributes {
-  id?: number; // ID opcional del producto
-  name: string; // Nombre del producto
-  price: number; // Precio del producto
-  description: string; // Descripción del producto
-  image: string; // URL de la imagen del producto
-  createdAt?: Date; // Fecha de creación opcional (se genera automáticamente)
-  updatedAt?: Date; // Fecha de actualización opcional (se genera automáticamente)
+  id?: number;
+  name: string;
+  price: number;
+  description: string;
+  imageUrl: string; // Renombrado a imageUrl
+  stock: number;
+  sizes: string[]; // Se mantiene como un arreglo de cadenas
+  gender: 'masculino' | 'femenino' | 'unisex'; // Definido como ENUM
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-// Extiende la clase Model para crear el modelo de Producto
 export class Product extends Model<ProductAttributes> implements ProductAttributes {
-  public id!: number; // ID del producto
-  public name!: string; // Nombre del producto
-  public price!: number; // Precio del producto
-  public description!: string; // Descripción del producto
-  public image!: string; // URL de la imagen del producto
+  public id!: number;
+  public name!: string;
+  public price!: number;
+  public description!: string;
+  public imageUrl!: string; // Renombrado
+  public stock!: number;
+  public sizes!: string[];
+  public gender!: 'masculino' | 'femenino' | 'unisex'; // Definido como ENUM
 
-  // Campos de fecha de creación y actualización
-  public readonly createdAt!: Date; // Fecha de creación (se genera automáticamente)
-  public readonly updatedAt!: Date; // Fecha de actualización (se genera automáticamente)
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
-// Inicializa el modelo con la configuración de la tabla
 Product.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED, // Tipo de dato para ID (entero sin signo)
-      autoIncrement: true, // Autoincrementable
-      primaryKey: true, // Clave primaria
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
     },
     name: {
-      type: new DataTypes.STRING(128), // Tipo de dato para el nombre (cadena de hasta 128 caracteres)
-      allowNull: false, // Este campo no puede ser nulo
+      type: new DataTypes.STRING(128),
+      allowNull: false,
     },
     price: {
-      type: DataTypes.FLOAT, // Tipo de dato para el precio (número flotante)
-      allowNull: false, // Este campo no puede ser nulo
+      type: DataTypes.DECIMAL(10, 2), // Cambiado a DECIMAL
+      allowNull: false,
     },
     description: {
-      type: new DataTypes.STRING(256), // Tipo de dato para la descripción (cadena de hasta 256 caracteres)
-      allowNull: false, // Este campo no puede ser nulo
+      type: new DataTypes.STRING(256),
+      allowNull: false,
     },
-    image: {
-      type: new DataTypes.STRING(256), // Tipo de dato para la imagen (cadena de hasta 256 caracteres)
-      allowNull: false, // Este campo no puede ser nulo
+    imageUrl: { // Renombrado
+      type: new DataTypes.STRING(256),
+      allowNull: false,
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    sizes: {
+      type: DataTypes.JSON, // Almacena un arreglo de tallas
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.ENUM('masculino', 'femenino', 'unisex'), // Definido como ENUM
+      allowNull: false,
     },
   },
   {
-    tableName: 'products', // Nombre de la tabla en la base de datos
-    sequelize, // Instancia de sequelize para conectar con la base de datos
+    tableName: 'products',
+    sequelize,
   }
 );

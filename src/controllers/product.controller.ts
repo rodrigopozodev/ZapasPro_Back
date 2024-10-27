@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { Product } from '../models/product.model'; // Asegúrate de que la importación está correctamente nombrada
 
 // Controlador para crear un nuevo producto
-// CAMBIO FUTURO: Si añades más campos (por ejemplo, stock, categorías), actualiza aquí y en el modelo.
+// CAMBIO FUTURO: Si añades más campos (por ejemplo, categorías), actualiza aquí y en el modelo.
 export const createProduct = async (req: Request, res: Response) => {
-  const { name, price, description, image } = req.body; // Datos del producto obtenidos del cuerpo de la solicitud
+  const { name, price, description, imageUrl, stock, sizes, gender } = req.body; // Cambiado 'image' a 'imageUrl'
 
   try {
     // Crear una nueva instancia del producto con los datos proporcionados
@@ -12,7 +12,10 @@ export const createProduct = async (req: Request, res: Response) => {
       name,
       price,
       description,
-      image,
+      imageUrl, // Cambiado aquí también
+      stock, // Añadido: stock del producto
+      sizes, // Cambiado: talla por sizes
+      gender, // Cambiado: sexo por gender
       createdAt: new Date(), // Añadimos fecha de creación
       updatedAt: new Date()  // Añadimos fecha de actualización
     });

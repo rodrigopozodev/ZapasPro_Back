@@ -5,9 +5,12 @@ export const createProductService = async (
   name: string, 
   price: number, 
   description: string, // Descripción del producto
-  image: string // URL de la imagen del producto
+  imageUrl: string, // Cambiado de 'image' a 'imageUrl'
+  stock: number, // Añadido: stock del producto
+  sizes: string[], // Cambiado: tamaño por sizes
+  gender: 'unisex' | 'masculino' | 'femenino' // Cambiado: tipo específico para gender
 ) => {
-  return Product.create({ name, price, description, image }); // Crea un nuevo producto en la base de datos
+  return Product.create({ name, price, description, imageUrl, stock, sizes, gender }); // Crea un nuevo producto en la base de datos
 };
 
 // Servicio para obtener todos los productos
@@ -21,9 +24,15 @@ export const updateProductService = async (
   name: string, 
   price: number, 
   description: string, // Descripción del producto
-  image: string // URL de la imagen del producto
+  imageUrl: string, // Cambiado de 'image' a 'imageUrl'
+  stock?: number, // Opcional: stock del producto
+  sizes?: string[], // Cambiado: talla por sizes
+  gender?: 'unisex' | 'masculino' | 'femenino' // Cambiado: tipo específico para gender
 ) => {
-  return Product.update({ name, price, description, image }, { where: { id } }); // Actualiza el producto con el ID especificado
+  return Product.update(
+    { name, price, description, imageUrl, stock, sizes, gender }, 
+    { where: { id } }
+  ); // Actualiza el producto con el ID especificado
 };
 
 // Servicio para eliminar un producto por su ID

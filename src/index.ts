@@ -82,21 +82,24 @@ const insertInitialData = async () => {
       { username: 'cliente26', email: 'cliente26@example.com', password: hashedPassword, role: 'client' },
       { username: 'cliente27', email: 'cliente27@example.com', password: hashedPassword, role: 'client' },
       { username: 'cliente28', email: 'cliente28@example.com', password: hashedPassword, role: 'client' },
-
     ]);
 
     console.log('Usuarios iniciales creados');
 
     // Crear productos iniciales
-    await Product.bulkCreate([
-      { name: 'Air Force 1 \'07 PRM', price: 100, description: 'Zapatillas clásicas y cómodas', image: '/img/Air Force 1 \'07 PRM.png' },
-      { name: 'Nike AIR FORCE 1', price: 110, description: 'Zapatillas Nike AIR FORCE 1', image: '/img/Nike-AIR_FORCE_1_07.png' },
-      { name: 'Nike AIR FORCE 1 Amarilla', price: 120, description: 'Zapatillas Nike AIR FORCE 1 en color amarillo', image: '/img/Nike-AIR_FORCE_1_07_amarilla.png' },
-      { name: 'Air Force 1 SP', price: 130, description: 'Zapatillas Air Force 1 SP', image: '/img/Air Force 1 SP.png' },
-    ]);
-
-    console.log('Productos iniciales creados');
+    const products = [
+      { name: 'Air Force 1 \'07 PRM', price: 100, description: 'Zapatillas clásicas y cómodas', imageUrl: '/img/Air Force 1 \'07 PRM.png', stock: 10, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' }, // Asegúrate de que sea un tipo específico
+      { name: 'Nike AIR FORCE 1', price: 110, description: 'Zapatillas Nike AIR FORCE 1', imageUrl: '/img/Nike-AIR_FORCE_1_07.png', stock: 15, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' },
+      { name: 'Nike AIR FORCE 1 Amarilla', price: 120, description: 'Zapatillas Nike AIR FORCE 1 en color amarillo', imageUrl: '/img/Nike-AIR_FORCE_1_07_amarilla.png', stock: 8, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' },
+      { name: 'Air Force 1 SP', price: 130, description: 'Zapatillas Air Force 1 SP', imageUrl: '/img/Air Force 1 SP.png', stock: 12, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' },
+    ];
     
+    // Insertar productos en la base de datos
+    Product.bulkCreate(products)
+      .then(() => console.log('Productos insertados correctamente'))
+      .catch((error) => console.error('Error al insertar productos:', error));
+    
+
   } catch (error) {
     console.error('Error al insertar datos iniciales:', error);
   }
