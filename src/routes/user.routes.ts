@@ -1,13 +1,19 @@
 import { Router } from 'express';
-import { createUser, loginUser, getUsers, getUserById, updateUser, deleteUser } from '../controllers/user.controller';
+import {
+  createUser,
+  getUsers,
+  updateUser,
+  deleteUser,
+  loginUser,
+} from '../controllers/user.controller';
 
 const router = Router();
 
-router.post('/register', createUser);
-router.post('/login', loginUser); // Ruta para iniciar sesión
-router.get('/', getUsers);
-router.get('/:id', getUserById);
-router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
+// Rutas para usuarios
+router.post('/', createUser); // Ahora será /api/users
+router.get('/', getUsers);      // Ahora será /api/users
+router.put('/:id', updateUser); // Ahora será /api/users/:id
+router.delete('/:id', deleteUser); // Ahora será /api/users/:id
+router.post('/login', loginUser); // Ahora será /api/users/login
 
 export default router;

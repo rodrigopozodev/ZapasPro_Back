@@ -124,17 +124,24 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-// Controlador para eliminar un usuario por ID
+// Controlador para eliminar un usuario
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
+
   try {
     const user = await User.findByPk(id);
     if (!user) {
-      return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado',
+      });
     }
 
     await user.destroy();
-    res.json({ success: true, message: 'Usuario eliminado' });
+    res.json({
+      success: true,
+      message: 'Usuario eliminado correctamente',
+    });
   } catch (error) {
     handleError(res, error, 'Error al eliminar el usuario');
   }

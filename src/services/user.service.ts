@@ -63,17 +63,6 @@ class UserService {
     await user.save(); // Guardar cambios en la base de datos
     return user; // Devolver el usuario actualizado
   }
-
-  // Método para eliminar un usuario por ID
-  async deleteUser(id: string) {
-    const user = await User.findByPk(id);
-    if (!user) {
-      throw new Error('Usuario no encontrado.');
-    }
-
-    await user.destroy(); // Eliminar el usuario de la base de datos
-    return { message: 'Usuario eliminado con éxito.' }; // Mensaje de éxito
-  }
 }
 
 export default new UserService();

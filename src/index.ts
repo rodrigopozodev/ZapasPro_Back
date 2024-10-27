@@ -27,7 +27,7 @@ app.use('/api/products', productRoutes); // Ruta para productos
 app.use('/api/users', userRoutes); // Ruta para usuarios
 
 // Sincroniza la base de datos y ejecuta el servidor
-sequelize.sync({ force: true })  // 'force: true' reinicia la base de datos cada vez (para desarrollo)
+sequelize.sync({})  // 'force: true' reinicia la base de datos cada vez (para desarrollo)
   .then(async () => {
     console.log('Base de datos sincronizada');
     
@@ -58,6 +58,31 @@ const insertInitialData = async () => {
       { username: 'cliente2', email: 'cliente2@example.com', password: hashedPassword, role: 'client' },
       { username: 'cliente3', email: 'cliente3@example.com', password: hashedPassword, role: 'client' },
       { username: 'cliente4', email: 'cliente4@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente5', email: 'cliente5@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente6', email: 'cliente6@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente7', email: 'cliente7@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente8', email: 'cliente8@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente9', email: 'cliente9@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente10', email: 'cliente10@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente11', email: 'cliente11@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente12', email: 'cliente12@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente13', email: 'cliente13@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente14', email: 'cliente14@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente15', email: 'cliente15@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente16', email: 'cliente16@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente17', email: 'cliente17@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente18', email: 'cliente18@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente19', email: 'cliente19@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente20', email: 'cliente20@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente21', email: 'cliente21@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente22', email: 'cliente22@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente23', email: 'cliente23@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente24', email: 'cliente24@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente25', email: 'cliente25@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente26', email: 'cliente26@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente27', email: 'cliente27@example.com', password: hashedPassword, role: 'client' },
+      { username: 'cliente28', email: 'cliente28@example.com', password: hashedPassword, role: 'client' },
+
     ]);
 
     console.log('Usuarios iniciales creados');
