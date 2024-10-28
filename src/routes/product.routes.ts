@@ -1,12 +1,18 @@
-import { Router } from 'express'; // Importa el enrutador de Express
-import { createProduct, getProducts } from '../controllers/product.controller'; // Importa los controladores de productos
+import { Router } from 'express'; 
+import { createProduct, getProducts, updateProduct, deleteProduct } from '../controllers/product.controller'; 
 
-const router = Router(); // Crea una nueva instancia del enrutador
+const router = Router(); 
 
 // Ruta para crear un nuevo producto
-router.post('/', createProduct); // Llama al controlador createProduct al recibir una solicitud POST en '/'
+router.post('/', createProduct); 
 
 // Ruta para obtener todos los productos
-router.get('/', getProducts); // Llama al controlador getProducts al recibir una solicitud GET en '/'
+router.get('/', getProducts); 
 
-export default router; // Exporta el enrutador para su uso en otras partes de la aplicación
+// Ruta para actualizar un producto por ID
+router.put('/:id', updateProduct); 
+
+// Ruta para eliminar un producto por ID
+router.delete('/:id', deleteProduct); 
+
+export default router; 

@@ -24,6 +24,7 @@ export class Product extends Model<ProductAttributes> implements ProductAttribut
   public sizes!: string[];
   public gender!: 'masculino' | 'femenino' | 'unisex'; // Definido como ENUM
 
+  // Propiedades de solo lectura
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -68,5 +69,9 @@ Product.init(
   {
     tableName: 'products',
     sequelize,
+    timestamps: true, // Asegúrate de que esto esté habilitado para manejar createdAt y updatedAt automáticamente
   }
 );
+
+// Exporta el modelo
+export default Product;
