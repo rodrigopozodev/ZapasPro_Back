@@ -10,11 +10,17 @@ class UserService {
       throw new Error('El rol debe ser "admin" o "client".');
     }
 
+    // Verifica si el usuario ya existe
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      throw new Error('El correo ya está registrado.');
+    }
+
     // Encriptar la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Crear una nueva instancia del usuario
-    const newUser = new User({
+    const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
@@ -23,8 +29,6 @@ class UserService {
       updatedAt: new Date(),
     });
 
-    // Guardar el nuevo usuario en la base de datos
-    await newUser.save();
     return newUser; // Devolver el usuario creado
   }
 
@@ -62,6 +66,17 @@ class UserService {
 
     await user.save(); // Guardar cambios en la base de datos
     return user; // Devolver el usuario actualizado
+  }
+
+  // Método para eliminar un usuario por ID
+  async deleteUser(id: string) {
+    const user = await User.findByPk(id);
+    if (!user) {
+      throw new Error('Usuario no encontrado.');
+    }
+
+    await user.destroy(); // Eliminar el usuario de la base de datos
+    return { message: 'Usuario eliminado correctamente.' }; // Mensaje de éxito
   }
 }
 

@@ -13,7 +13,7 @@ const handleError = (res: Response, error: any, message: string) => {
 
 // Controlador para crear un nuevo usuario
 export const createUser = async (req: Request, res: Response) => {
-  const { username, email, password, role } = req.body;
+  const { username, email, password, role, birthDay, surname, phoneNumber, birthMonth, birthYear, shoppingPreference } = req.body;
 
   if (!['admin', 'client'].includes(role)) {
     return res.status(400).json({
@@ -37,6 +37,12 @@ export const createUser = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       role,
+      birthDay,
+      surname,
+      phoneNumber,
+      birthMonth,
+      birthYear,
+      shoppingPreference,
       createdAt: new Date(),
       updatedAt: new Date()
     });
@@ -47,6 +53,12 @@ export const createUser = async (req: Request, res: Response) => {
         username: newUser.username,
         email: newUser.email,
         role: newUser.role,
+        birthDay: newUser.birthDay,
+        surname: newUser.surname,
+        phoneNumber: newUser.phoneNumber,
+        birthMonth: newUser.birthMonth,
+        birthYear: newUser.birthYear,
+        shoppingPreference: newUser.shoppingPreference,
       }
     });
   } catch (error) {
@@ -77,6 +89,12 @@ export const loginUser = async (req: Request, res: Response) => {
         username: user.username,
         email: user.email,
         role: user.role,
+        birthDay: user.birthDay,
+        surname: user.surname,
+        phoneNumber: user.phoneNumber,
+        birthMonth: user.birthMonth,
+        birthYear: user.birthYear,
+        shoppingPreference: user.shoppingPreference,
       },
     });
   } catch (error) {
@@ -111,7 +129,7 @@ export const getUserById = async (req: Request, res: Response) => {
 // Controlador para actualizar un usuario por ID
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { username, email, role } = req.body;
+  const { username, email, role, birthDay, surname, phoneNumber, birthMonth, birthYear, shoppingPreference } = req.body;
   try {
     const user = await User.findByPk(id);
     if (!user) {
@@ -121,6 +139,12 @@ export const updateUser = async (req: Request, res: Response) => {
     user.username = username;
     user.email = email;
     user.role = role;
+    user.birthDay = birthDay;
+    user.surname = surname;
+    user.phoneNumber = phoneNumber;
+    user.birthMonth = birthMonth;
+    user.birthYear = birthYear;
+    user.shoppingPreference = shoppingPreference;
 
     await user.save();
     res.json({ success: true, user });

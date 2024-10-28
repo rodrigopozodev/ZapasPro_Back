@@ -10,6 +10,13 @@ interface UserAttributes {
   role: 'admin' | 'client'; // Definición del tipo para el campo role
   createdAt?: Date;
   updatedAt?: Date;
+  birthDay?: number | null; // Nueva propiedad
+  surname?: string; // Nueva propiedad
+  phoneNumber?: string; // Nueva propiedad
+  birthMonth?: number; // Nueva propiedad
+  birthYear?: number; // Nueva propiedad
+  currentPassword?: string; // Nueva propiedad
+  shoppingPreference?: string; // Nueva propiedad
 }
 
 // Definición de los atributos opcionales para la creación de un nuevo usuario
@@ -24,6 +31,13 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public role!: 'admin' | 'client';
   public createdAt!: Date;
   public updatedAt!: Date;
+  public birthDay?: number | null; // Nueva propiedad
+  public surname?: string; // Nueva propiedad
+  public phoneNumber?: string; // Nueva propiedad
+  public birthMonth?: number; // Nueva propiedad
+  public birthYear?: number; // Nueva propiedad
+  public currentPassword?: string; // Nueva propiedad
+  public shoppingPreference?: string; // Nueva propiedad
 }
 
 // Inicialización del modelo
@@ -54,6 +68,34 @@ User.init(
       type: DataTypes.ENUM('admin', 'client'), // Solo se permiten los roles especificados
       allowNull: false,
     },
+    birthDay: {
+      type: DataTypes.INTEGER, // Asegúrate de que el tipo se ajuste a tus necesidades
+      allowNull: true, // Puede ser nulo
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull: true, // Puede ser nulo
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true, // Puede ser nulo
+    },
+    birthMonth: {
+      type: DataTypes.INTEGER, // Asegúrate de que el tipo se ajuste a tus necesidades
+      allowNull: true, // Puede ser nulo
+    },
+    birthYear: {
+      type: DataTypes.INTEGER, // Asegúrate de que el tipo se ajuste a tus necesidades
+      allowNull: true, // Puede ser nulo
+    },
+    currentPassword: {
+      type: DataTypes.STRING,
+      allowNull: true, // Puede ser nulo
+    },
+    shoppingPreference: {
+      type: DataTypes.STRING,
+      allowNull: true, // Puede ser nulo
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -71,7 +113,7 @@ User.init(
     timestamps: true, // Para que Sequelize maneje createdAt y updatedAt automáticamente
     hooks: {
       beforeCreate: (user: User) => {
-        user.createdAt = new Date(); // Asegurarte de que createdAt se establece correctamente
+        user.createdAt = new Date(); // Asegúrate de que createdAt se establece correctamente
       },
       beforeUpdate: (user: User) => {
         user.updatedAt = new Date(); // Actualiza updatedAt antes de modificar
