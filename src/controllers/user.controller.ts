@@ -42,7 +42,12 @@ export const createUser = async (req: Request, res: Response) => {
     });
     res.status(201).json({
       success: true,
-      user: newUser
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+        role: newUser.role,
+      }
     });
   } catch (error) {
     handleError(res, error, 'Error al crear el usuario');
