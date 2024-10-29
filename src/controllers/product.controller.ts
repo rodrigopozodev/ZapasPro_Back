@@ -11,8 +11,6 @@ export const createProduct = async (req: Request, res: Response) => {
       price,
       description,
       imageUrl,
-      stock,
-      sizes,
       gender,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -54,7 +52,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
   try {
     const [updated] = await Product.update(
-      { name, price, description, imageUrl, stock, sizes, gender },
+      { name, price, description, imageUrl, gender },
       {
         where: { id }
       }

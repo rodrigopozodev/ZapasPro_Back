@@ -1,40 +1,44 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+
 import productRoutes from './routes/product.routes';
 import userRoutes from './routes/user.routes';
+import stockRoutes from './routes/stock.routes'; // Importar las rutas de stock
+
 import { sequelize } from './config/database';
-import dotenv from 'dotenv';
-import { Product } from './models/product.model';
-import { User } from './models/user.model';
-import bcrypt from 'bcrypt'; // Importa bcrypt para el hashing de contraseñas
+import Product from './models/product.model'; // Cambiar a importación por defecto
+import { User } from './models/user.model'; // Cambiar a importación por defecto
+import Stock from './models/stock.model'; // Cambiar a importación por defecto
 
 // Cargar variables de entorno desde .env
 dotenv.config();
 
 const app = express();
 
-// Configurar CORS para permitir solicitudes desde un origen específico
+// Configuración de CORS
 app.use(cors({
-    origin: 'http://localhost:4200', // Permite solicitudes desde la aplicación en este origen
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json()); // Middleware para analizar cuerpos de solicitudes en formato JSON
+app.use(express.json()); // Middleware para analizar JSON
 
 // Rutas de la API
-app.use('/api/products', productRoutes); // Ruta para productos
-app.use('/api/users', userRoutes); // Ruta para usuarios
+app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/stock', stockRoutes); // Añadir rutas de stock
 
-// Sincroniza la base de datos y ejecuta el servidor
-sequelize.sync({})  // 'force: true' reinicia la base de datos cada vez (para desarrollo)
+// Sincronizar la base de datos y ejecutar el servidor
+sequelize.sync({})
   .then(async () => {
     console.log('Base de datos sincronizada');
     
-    // Llama a la función para crear datos iniciales
+    // Insertar datos iniciales
     await insertInitialData();
 
-    // Escucha en el puerto 3000
     app.listen(3000, () => {
       console.log('Servidor corriendo en http://localhost:3000');
     });
@@ -88,18 +92,24 @@ const insertInitialData = async () => {
 
     // Crear productos iniciales
     const products = [
-      { name: 'Air Force 1 \'07 PRM', price: 100, description: 'Zapatillas clásicas y cómodas', imageUrl: '/img/Air Force 1 \'07 PRM.png', stock: 10, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' }, // Asegúrate de que sea un tipo específico
-      { name: 'Nike AIR FORCE 1', price: 110, description: 'Zapatillas Nike AIR FORCE 1', imageUrl: '/img/Nike-AIR_FORCE_1_07.png', stock: 15, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' },
-      { name: 'Nike AIR FORCE 1 Amarilla', price: 120, description: 'Zapatillas Nike AIR FORCE 1 en color amarillo', imageUrl: '/img/Nike-AIR_FORCE_1_07_amarilla.png', stock: 8, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' },
-      { name: 'Air Force 1 SP', price: 130, description: 'Zapatillas Air Force 1 SP', imageUrl: '/img/Air Force 1 SP.png', stock: 12, sizes: ['37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48'], gender: 'unisex' as 'unisex' },
+      { name: 'Air Force 1 \'07 PRM', price: 100, description: 'Zapatillas clásicas y cómodas', imageUrl: '/img/Air Force 1 \'07 PRM.png', gender: 'unisex' as 'unisex' }, // Asegúrate de que sea un tipo específico
+      { name: 'Nike AIR FORCE 1', price: 110, description: 'Zapatillas Nike AIR FORCE 1', imageUrl: '/img/Nike-AIR_FORCE_1_07.png', gender: 'unisex' as 'unisex' },
+      { name: 'Nike AIR FORCE 1 Amarilla', price: 120, description: 'Zapatillas Nike AIR FORCE 1 en color amarillo', imageUrl: '/img/Nike-AIR_FORCE_1_07_amarilla.png', gender: 'unisex' as 'unisex' },
+      { name: 'Air Force 1 SP', price: 130, description: 'Zapatillas Air Force 1 SP', imageUrl: '/img/Air Force 1 SP.png', gender: 'unisex' as 'unisex' },
     ];
     
     // Insertar productos en la base de datos
-    Product.bulkCreate(products)
-      .then(() => console.log('Productos insertados correctamente'))
-      .catch((error) => console.error('Error al insertar productos:', error));
-    
+    await Product.bulkCreate(products);
+    console.log('Productos insertados correctamente');
 
+    // Crear stock inicial
+    await Stock.bulkCreate([
+      { fecha: new Date(), producto: 'Air Force 1 \'07 PRM', talla: '43', cantidad: 10, movimiento: 'compra' },
+      { fecha: new Date(), producto: 'Air Force 1 \'07 PRM', talla: '44', cantidad: 15, movimiento: 'compra' },
+      { fecha: new Date(), producto: 'Air Force 1 \'07 PRM', talla: '45', cantidad: 8, movimiento: 'compra' }
+    ]);
+
+    console.log('Datos iniciales insertados correctamente');
   } catch (error) {
     console.error('Error al insertar datos iniciales:', error);
   }

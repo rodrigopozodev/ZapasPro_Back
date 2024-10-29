@@ -6,10 +6,8 @@ export interface ProductAttributes {
   name: string;
   price: number;
   description: string;
-  imageUrl: string; // Renombrado a imageUrl
-  stock: number;
-  sizes: string[]; // Se mantiene como un arreglo de cadenas
-  gender: 'masculino' | 'femenino' | 'unisex'; // Definido como ENUM
+  imageUrl: string;
+  gender: 'masculino' | 'femenino' | 'unisex';
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -19,10 +17,8 @@ export class Product extends Model<ProductAttributes> implements ProductAttribut
   public name!: string;
   public price!: number;
   public description!: string;
-  public imageUrl!: string; // Renombrado
-  public stock!: number;
-  public sizes!: string[];
-  public gender!: 'masculino' | 'femenino' | 'unisex'; // Definido como ENUM
+  public imageUrl!: string;
+  public gender!: 'masculino' | 'femenino' | 'unisex';
 
   // Propiedades de solo lectura
   public readonly createdAt!: Date;
@@ -41,35 +37,26 @@ Product.init(
       allowNull: false,
     },
     price: {
-      type: DataTypes.DECIMAL(10, 2), // Cambiado a DECIMAL
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     description: {
       type: new DataTypes.STRING(256),
       allowNull: false,
     },
-    imageUrl: { // Renombrado
+    imageUrl: {
       type: new DataTypes.STRING(256),
       allowNull: false,
     },
-    stock: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-    },
-    sizes: {
-      type: DataTypes.JSON, // Almacena un arreglo de tallas
-      allowNull: false,
-    },
     gender: {
-      type: DataTypes.ENUM('masculino', 'femenino', 'unisex'), // Definido como ENUM
+      type: DataTypes.ENUM('masculino', 'femenino', 'unisex'),
       allowNull: false,
     },
   },
   {
     tableName: 'products',
     sequelize,
-    timestamps: true, // Asegúrate de que esto esté habilitado para manejar createdAt y updatedAt automáticamente
+    timestamps: true,
   }
 );
 

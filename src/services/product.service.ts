@@ -10,7 +10,7 @@ export const createProductService = async (
   sizes: string[], // Cambiado: tamaño por sizes
   gender: 'unisex' | 'masculino' | 'femenino' // Cambiado: tipo específico para gender
 ) => {
-  return Product.create({ name, price, description, imageUrl, stock, sizes, gender }); // Crea un nuevo producto en la base de datos
+  return Product.create({ name, price, description, imageUrl, gender }); // Crea un nuevo producto en la base de datos
 };
 
 // Servicio para obtener todos los productos
@@ -30,7 +30,7 @@ export const updateProductService = async (
   gender?: 'unisex' | 'masculino' | 'femenino' // Cambiado: tipo específico para gender
 ) => {
   return Product.update(
-    { name, price, description, imageUrl, stock, sizes, gender }, 
+    { name, price, description, imageUrl, gender }, 
     { where: { id } }
   ); // Actualiza el producto con el ID especificado
 };
