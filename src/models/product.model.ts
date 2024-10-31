@@ -8,6 +8,8 @@ export interface ProductAttributes {
   description: string;
   imageUrl: string;
   gender: 'masculino' | 'femenino' | 'unisex';
+  color: 'negro' | 'azul' | 'marron' | 'verde' | 'gris' | 'naranja' | 'rosa' | 'morado' | 'rojo' | 'blanco' | 'amarillo' | 'multicolor';
+  marca: 'Nike' | 'Adidas' | 'Puma' | 'Reebok' | 'New Balance' | 'Converse';
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -19,6 +21,8 @@ export class Product extends Model<ProductAttributes> implements ProductAttribut
   public description!: string;
   public imageUrl!: string;
   public gender!: 'masculino' | 'femenino' | 'unisex';
+  public color!: 'negro' | 'azul' | 'marron' | 'verde' | 'gris' | 'naranja' | 'rosa' | 'morado' | 'rojo' | 'blanco' | 'amarillo' | 'multicolor';
+  public marca!: 'Nike' | 'Adidas' | 'Puma' | 'Reebok' | 'New Balance' | 'Converse';
 
   // Propiedades de solo lectura
   public readonly createdAt!: Date;
@@ -50,6 +54,14 @@ Product.init(
     },
     gender: {
       type: DataTypes.ENUM('masculino', 'femenino', 'unisex'),
+      allowNull: false,
+    },
+    color: {
+      type: DataTypes.ENUM('negro', 'azul', 'marron', 'verde', 'gris', 'naranja', 'rosa', 'morado', 'rojo', 'blanco', 'amarillo', 'multicolor'),
+      allowNull: false,
+    },
+    marca: {
+      type: DataTypes.ENUM('Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Converse'),
       allowNull: false,
     },
   },

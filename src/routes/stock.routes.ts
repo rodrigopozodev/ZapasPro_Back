@@ -1,18 +1,12 @@
-import { Router } from 'express';
-import { createStock, getStock, updateStock, deleteStock } from '../controllers/stock.controller';
+import express from 'express';
+import StockController from '../controllers/stock.controller';
 
-const router = Router();
+const router = express.Router();
 
-// Ruta para crear una nueva entrada de stock
-router.post('/', createStock); // Cambiar /stock a /
-
-// Ruta para obtener todas las entradas de stock
-router.get('/', getStock);
-
-// Ruta para actualizar una entrada de stock por ID
-router.put('/:id', updateStock);
-
-// Ruta para eliminar una entrada de stock por ID
-router.delete('/:id', deleteStock);
+// Definir las rutas para la API de stock
+router.get('/', StockController.getAll); // Obtener todos los stocks
+router.post('/', StockController.create); // Crear un nuevo stock
+router.put('/:id', StockController.update); // Actualizar un stock por ID
+router.delete('/:id', StockController.delete); // Eliminar un stock por ID
 
 export default router;

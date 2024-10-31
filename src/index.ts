@@ -2,45 +2,46 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import path from 'path'; // Importa path para manejar rutas de archivos
 
 import productRoutes from './routes/product.routes';
 import userRoutes from './routes/user.routes';
-import stockRoutes from './routes/stock.routes'; // Importar las rutas de stock
+import stockRoutes from './routes/stock.routes';
 
 import { sequelize } from './config/database';
-import Product from './models/product.model'; // Cambiar a importación por defecto
-import { User } from './models/user.model'; // Cambiar a importación por defecto
-import Stock from './models/stock.model'; // Cambiar a importación por defecto
+import Product, { ProductAttributes } from './models/product.model';
+import { User } from './models/user.model';
+import Stock from './models/stock.model';
 
-// Cargar variables de entorno desde .env
 dotenv.config();
 
 const app = express();
 
 // Configuración de CORS
 app.use(cors({
-    origin: 'http://localhost:4200',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: 'http://localhost:4200', // Permite solicitudes desde esta URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos
 }));
 
-app.use(express.json()); // Middleware para analizar JSON
+app.use(express.json());
+
+// Servir archivos estáticos desde el directorio 'public'
+app.use(express.static(path.join(__dirname, 'public'))); // Asegúrate de que la ruta sea correcta
 
 // Rutas de la API
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/stock', stockRoutes); // Añadir rutas de stock
+app.use('/api/stock', stockRoutes);
 
 // Sincronizar la base de datos y ejecutar el servidor
 sequelize.sync({})
   .then(async () => {
     console.log('Base de datos sincronizada');
-    
-    // Insertar datos iniciales
-    await insertInitialData();
+    await insertInitialData(); // Inserta datos iniciales en la base de datos
 
-    app.listen(3000, () => {
-      console.log('Servidor corriendo en http://localhost:3000');
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`Servidor corriendo en http://localhost:${process.env.PORT || 3000}`);
     });
   })
   .catch(err => {
@@ -50,8 +51,7 @@ sequelize.sync({})
 // Función para insertar datos iniciales
 const insertInitialData = async () => {
   try {
-    // Crear usuarios iniciales
-    const hashedPassword = await bcrypt.hash('1234', 10); // Hashea la contraseña
+    const hashedPassword = await bcrypt.hash('1234', 10); // Hashea la contraseña por defecto
 
     await User.bulkCreate([
       { username: 'admin1', email: 'admin1@example.com', password: hashedPassword, role: 'admin' },
@@ -90,30 +90,59 @@ const insertInitialData = async () => {
 
     console.log('Usuarios iniciales creados');
 
-    // Crear productos iniciales
-    const products = [
-      { name: 'Air Force 1 \'07 PRM', price: 100, description: 'Zapatillas clásicas y cómodas', imageUrl: '/img/Air Force 1 \'07 PRM.png', gender: 'unisex' as 'unisex' }, // Asegúrate de que sea un tipo específico
-      { name: 'Nike AIR FORCE 1', price: 110, description: 'Zapatillas Nike AIR FORCE 1', imageUrl: '/img/Nike-AIR_FORCE_1_07.png', gender: 'unisex' as 'unisex' },
-      { name: 'Nike AIR FORCE 1 Amarilla', price: 120, description: 'Zapatillas Nike AIR FORCE 1 en color amarillo', imageUrl: '/img/Nike-AIR_FORCE_1_07_amarilla.png', gender: 'unisex' as 'unisex' },
-      { name: 'Air Force 1 SP', price: 130, description: 'Zapatillas Air Force 1 SP', imageUrl: '/img/Air Force 1 SP.png', gender: 'unisex' as 'unisex' },
+    // Crear productos iniciales con valores válidos de color y marca
+    const products: ProductAttributes[] = [
+      { name: 'Air Force 1 \'07 PRM', price: 100, description: 'Zapatillas clásicas y cómodas', imageUrl: '/img/Air Force 1 \'07 PRM.png', gender: 'unisex', color: 'verde', marca: 'Nike' },
+      { name: 'Nike AIR FORCE 1', price: 110, description: 'Zapatillas Nike AIR FORCE 1', imageUrl: '/img/Nike-AIR_FORCE_1_07.png', gender: 'unisex', color: 'blanco', marca: 'Nike' },
+      { name: 'Nike AIR FORCE 1 Amarilla', price: 120, description: 'Zapatillas Nike AIR FORCE 1 en color amarillo', imageUrl: '/img/Nike-AIR_FORCE_1_07_amarilla.png', gender: 'unisex', color: 'blanco', marca: 'Nike' },
+      { name: 'Air Force 1 SP', price: 130, description: 'Zapatillas Air Force 1 SP', imageUrl: '/img/Air Force 1 SP.png', gender: 'unisex', color: 'negro', marca: 'Nike' },
+      { name: 'Nike Air Max Plus Drift', price: 199.99, description: 'Deja que tu estilo se eleve con las Air Max Plus Drift, una experiencia Tuned Air actualizada que ofrece estabilidad y amortiguación premium. Con una malla ventilada, colores degradados y líneas de diseño onduladas originales, rinde homenaje a su estilo desafiante.', imageUrl: '/img/Nike Air Max Plus Drift.png', gender: 'masculino', color: 'negro', marca: 'Nike' }
     ];
-    
-    // Insertar productos en la base de datos
-    await Product.bulkCreate(products);
-    console.log('Productos insertados correctamente');
 
-    // Crear stock inicial
-    await Stock.bulkCreate([
-      { fecha: new Date(), producto: 'Air Force 1 \'07 PRM', talla: '43', cantidad: 10, movimiento: 'compra' },
-      { fecha: new Date(), producto: 'Air Force 1 \'07 PRM', talla: '44', cantidad: 15, movimiento: 'compra' },
-      { fecha: new Date(), producto: 'Air Force 1 \'07 PRM', talla: '45', cantidad: 8, movimiento: 'compra' }
-    ]);
+    const createdProducts = await Product.bulkCreate(products);
+    console.log('Productos iniciales creados');
 
-    console.log('Datos iniciales insertados correctamente');
+    // Crear entradas de stock referenciando el id de los productos
+    const stockEntries = [];
+
+    // Crear stock para cada producto, exceptuando los IDs 4 y 5
+    for (const product of createdProducts) {
+      let stockCount = 1000; // Stock normal
+
+      // Si el ID es 4 o 5, el stock es 500
+      if (product.id === 4 || product.id === 5) {
+        stockCount = 500;
+      }
+
+      // Crear tallas de 37 a 45 para productos
+      for (let talla = 37; talla <= 45; talla++) {
+        stockEntries.push({
+          productoId: product.id,
+          talla: talla.toString(),
+          cantidad: stockCount,
+          movimiento: 'compra' as 'compra',
+          fecha: new Date()
+        });
+      }
+
+      // Si el ID es 4 o 5, crear tallas de 41 a 48
+      if (product.id === 4 || product.id === 5) {
+        for (let talla = 41; talla <= 48; talla++) {
+          stockEntries.push({
+            productoId: product.id,
+            talla: talla.toString(),
+            cantidad: stockCount,
+            movimiento: 'compra' as 'compra',
+            fecha: new Date()
+          });
+        }
+      }
+    }
+
+    await Stock.bulkCreate(stockEntries);
+    console.log('Stock inicial creado');
   } catch (error) {
     console.error('Error al insertar datos iniciales:', error);
   }
 };
 
-// Exportar la aplicación (opcional, en caso de que necesites usarla en pruebas)
-export default app;

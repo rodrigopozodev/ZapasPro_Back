@@ -3,7 +3,7 @@ import { Product } from '../models/product.model';
 
 // Controlador para crear un nuevo producto
 export const createProduct = async (req: Request, res: Response) => {
-  const { name, price, description, imageUrl, stock, sizes, gender } = req.body; 
+  const { name, price, description, imageUrl, gender, color, marca } = req.body; 
 
   try {
     const newProduct = new Product({
@@ -12,6 +12,8 @@ export const createProduct = async (req: Request, res: Response) => {
       description,
       imageUrl,
       gender,
+      color,
+      marca,
       createdAt: new Date(),
       updatedAt: new Date()
     });
@@ -48,11 +50,11 @@ export const getProducts = async (req: Request, res: Response) => {
 // Controlador para actualizar un producto por ID
 export const updateProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, price, description, imageUrl, stock, sizes, gender } = req.body;
+  const { name, price, description, imageUrl, gender, color, marca } = req.body;
 
   try {
     const [updated] = await Product.update(
-      { name, price, description, imageUrl, gender },
+      { name, price, description, imageUrl, gender, color, marca },
       {
         where: { id }
       }
@@ -76,7 +78,6 @@ export const updateProduct = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 // Controlador para eliminar un producto por ID
 export const deleteProduct = async (req: Request, res: Response) => {

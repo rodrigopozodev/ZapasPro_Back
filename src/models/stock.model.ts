@@ -1,60 +1,60 @@
-// Backend/src/models/stock.model.ts
-
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database';
 
 export interface StockAttributes {
-  id?: number;
-  fecha: Date;
-  producto: string;
-  talla: string; 
-  cantidad: number;
-  movimiento: 'compra' | 'venta' | 'ajuste';
+    id?: number;
+    productoId: number;
+    talla: string;
+    cantidad: number;
+    movimiento: 'compra' | 'venta' | 'ajuste';
+    fecha: Date;
 }
 
-class Stock extends Model<StockAttributes> implements StockAttributes {
-  public id!: number;
-  public fecha!: Date;
-  public producto!: string;
-  public talla!: string;
-  public cantidad!: number;
-  public movimiento!: 'compra' | 'venta' | 'ajuste';
+export class Stock extends Model<StockAttributes> implements StockAttributes {
+    public id!: number;
+    public productoId!: number;
+    public talla!: string;
+    public cantidad!: number;
+    public movimiento!: 'compra' | 'venta' | 'ajuste';
+    public fecha!: Date;
+
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }
 
 Stock.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+    {
+        id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        productoId: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
+        talla: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        cantidad: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        movimiento: {
+            type: DataTypes.ENUM('compra', 'venta', 'ajuste'),
+            allowNull: false,
+        },
+        fecha: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
     },
-    fecha: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    producto: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    talla: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    cantidad: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    movimiento: {
-      type: DataTypes.ENUM('compra', 'venta', 'ajuste'),
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'Stock',
-    tableName: 'stock',
-    timestamps: false,
-  }
+    {
+        tableName: 'stocks',
+        sequelize,
+        timestamps: true,
+    }
 );
 
 export default Stock;

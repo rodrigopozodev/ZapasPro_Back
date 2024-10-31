@@ -4,13 +4,15 @@ import { Product } from '../models/product.model'; // Importa el modelo de produ
 export const createProductService = async (
   name: string, 
   price: number, 
-  description: string, // Descripción del producto
-  imageUrl: string, // Cambiado de 'image' a 'imageUrl'
-  stock: number, // Añadido: stock del producto
-  sizes: string[], // Cambiado: tamaño por sizes
-  gender: 'unisex' | 'masculino' | 'femenino' // Cambiado: tipo específico para gender
+  description: string, 
+  imageUrl: string, 
+  stock: number, 
+  sizes: string[], 
+  gender: 'unisex' | 'masculino' | 'femenino',
+  color: 'negro' | 'azul' | 'marron' | 'verde' | 'gris' | 'naranja' | 'rosa' | 'morado' | 'rojo' | 'blanco' | 'amarillo' | 'multicolor', 
+  marca: 'Nike' | 'Adidas' | 'Puma' | 'Reebok' | 'New Balance' | 'Converse' 
 ) => {
-  return Product.create({ name, price, description, imageUrl, gender }); // Crea un nuevo producto en la base de datos
+  return Product.create({ name, price, description, imageUrl, gender, color, marca }); // Crea un nuevo producto en la base de datos
 };
 
 // Servicio para obtener todos los productos
@@ -23,14 +25,16 @@ export const updateProductService = async (
   id: number, 
   name: string, 
   price: number, 
-  description: string, // Descripción del producto
-  imageUrl: string, // Cambiado de 'image' a 'imageUrl'
-  stock?: number, // Opcional: stock del producto
-  sizes?: string[], // Cambiado: talla por sizes
-  gender?: 'unisex' | 'masculino' | 'femenino' // Cambiado: tipo específico para gender
+  description: string, 
+  imageUrl: string, 
+  stock?: number, 
+  sizes?: string[], 
+  gender?: 'unisex' | 'masculino' | 'femenino', 
+  color?: 'negro' | 'azul' | 'marron' | 'verde' | 'gris' | 'naranja' | 'rosa' | 'morado' | 'rojo' | 'blanco' | 'amarillo' | 'multicolor', 
+  marca?: 'Nike' | 'Adidas' | 'Puma' | 'Reebok' | 'New Balance' | 'Converse' 
 ) => {
   return Product.update(
-    { name, price, description, imageUrl, gender }, 
+    { name, price, description, imageUrl, gender, color, marca }, 
     { where: { id } }
   ); // Actualiza el producto con el ID especificado
 };
