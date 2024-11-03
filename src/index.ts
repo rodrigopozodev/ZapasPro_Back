@@ -54,7 +54,7 @@ const insertInitialData = async () => {
     const hashedPassword = await bcrypt.hash('1234', 10); // Hashea la contraseña por defecto
 
     await User.bulkCreate([
-      { username: 'admin1', email: 'admin1@example.com', password: hashedPassword, role: 'admin' },
+      { username: 'Rodrigo', email: 'rodrigo@gmail.com', password: hashedPassword, role: 'admin' },
       { username: 'admin2', email: 'admin2@example.com', password: hashedPassword, role: 'admin' },
       { username: 'admin3', email: 'admin3@example.com', password: hashedPassword, role: 'admin' },
       { username: 'admin4', email: 'admin4@example.com', password: hashedPassword, role: 'admin' },

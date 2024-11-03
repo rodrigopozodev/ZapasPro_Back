@@ -1,5 +1,5 @@
 import { Router } from 'express'; 
-import { createProduct, getProducts, updateProduct, deleteProduct } from '../controllers/product.controller'; 
+import { createProduct, getProducts, getProductById, updateProduct, deleteProduct } from '../controllers/product.controller'; 
 
 const router = Router(); 
 
@@ -8,6 +8,9 @@ router.post('/', createProduct);
 
 // Ruta para obtener todos los productos
 router.get('/', getProducts); 
+
+// Ruta para obtener un producto por ID
+router.get('/:id', getProductById);  // Agrega esta línea
 
 // Ruta para actualizar un producto por ID
 router.put('/:id', updateProduct); 

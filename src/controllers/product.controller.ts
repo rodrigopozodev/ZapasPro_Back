@@ -47,6 +47,30 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+// Controlador para obtener un producto por ID
+export const getProductById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findByPk(id); // Busca el producto por su ID
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Producto no encontrado' });
+    }
+
+    res.json({
+      success: true,
+      product
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener el producto',
+      error: error.message || 'Error desconocido'
+    });
+  }
+};
+
 // Controlador para actualizar un producto por ID
 export const updateProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
