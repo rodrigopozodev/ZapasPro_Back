@@ -8,5 +8,6 @@ router.get('/', StockController.getAll); // Obtener todos los stocks
 router.post('/', StockController.create); // Crear un nuevo stock
 router.put('/:id', StockController.update); // Actualizar un stock por ID
 router.delete('/:id', StockController.delete); // Eliminar un stock por ID
+router.get('/producto/:productoId', StockController.getByProductoId); // Obtener un stock por productoId
 
 export default router;

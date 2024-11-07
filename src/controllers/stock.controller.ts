@@ -66,6 +66,28 @@ class StockController {
             return res.status(400).json({ error: 'Error desconocido al eliminar stock' });
         }
     }
+
+    // Obtener todos los stocks por productoId (todas las tallas de un producto específico)
+    static async getByProductoId(req: Request, res: Response) {
+        const { productoId } = req.params;
+        try {
+            // Obtenemos todos los registros de stock para un producto específico
+            const stocks = await Stock.findAll({
+                where: { productoId: productoId }, // Filtramos por productoId
+            });
+
+            if (stocks.length > 0) {
+                return res.status(200).json(stocks);
+            } else {
+                throw new Error('No se encontró stock para el producto especificado');
+            }
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return res.status(400).json({ error: error.message });
+            }
+            return res.status(400).json({ error: 'Error desconocido al obtener stock por productoId' });
+        }
+    }
 }
 
 export default StockController;
