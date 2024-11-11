@@ -12,37 +12,34 @@ export const insertInitialData = async () => {
     // Crear usuarios iniciales
     await User.bulkCreate([
         { username: 'Rodrigo', email: 'rodrigo@gmail.com', password: hashedPassword, role: 'admin' },
-        { username: 'Admin2', email: 'admin2@example.com', password: hashedPassword, role: 'admin' }, // Primera letra en mayúscula
-        { username: 'Admin3', email: 'admin3@example.com', password: hashedPassword, role: 'admin' }, // Primera letra en mayúscula
-        { username: 'Admin4', email: 'admin4@example.com', password: hashedPassword, role: 'admin' }, // Primera letra en mayúscula
-        { username: 'Cliente1', email: 'cliente1@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente2', email: 'cliente2@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente3', email: 'cliente3@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente4', email: 'cliente4@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente5', email: 'cliente5@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente6', email: 'cliente6@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente7', email: 'cliente7@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente8', email: 'cliente8@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente9', email: 'cliente9@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente10', email: 'cliente10@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente11', email: 'cliente11@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente12', email: 'cliente12@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente13', email: 'cliente13@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente14', email: 'cliente14@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente15', email: 'cliente15@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente16', email: 'cliente16@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente17', email: 'cliente17@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente18', email: 'cliente18@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente19', email: 'cliente19@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente20', email: 'cliente20@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente21', email: 'cliente21@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente22', email: 'cliente22@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente23', email: 'cliente23@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente24', email: 'cliente24@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente25', email: 'cliente25@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente26', email: 'cliente26@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente27', email: 'cliente27@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
-        { username: 'Cliente28', email: 'cliente28@example.com', password: hashedPassword, role: 'client' }, // Primera letra en mayúscula
+        { username: 'Juan', email: 'mesa@example.com', password: hashedPassword, role: 'admin' },
+        { username: 'Pedro', email: 'pelota@example.com', password: hashedPassword, role: 'admin' },
+        { username: 'Laura', email: 'sombrero@example.com', password: hashedPassword, role: 'admin' },
+        { username: 'Carlos', email: 'telefono@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Ana', email: 'ventilador@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Lucia', email: 'libro@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Miguel', email: 'pluma@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Elena', email: 'camisa@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Sofia', email: 'banco@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Daniel', email: 'taza@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Irene', email: 'pintura@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Luis', email: 'guitarra@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Sara', email: 'viento@example.com', password: hashedPassword, role: 'client' },
+        { username: 'David', email: 'espejo@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Paula', email: 'almohada@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Oscar', email: 'silla@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Raul', email: 'zapato@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Victoria', email: 'bolsa@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Mario', email: 'luna@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Julia', email: 'flor@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Martina', email: 'peluche@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Adrian', email: 'fruta@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Esteban', email: 'piedra@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Alba', email: 'telefono2@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Javier', email: 'carro@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Patricia', email: 'almidon@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Raquel', email: 'pelota2@example.com', password: hashedPassword, role: 'client' },
+        { username: 'Felipe', email: 'raton@example.com', password: hashedPassword, role: 'client' },
       ]);
 
     console.log('Usuarios iniciales creados');
