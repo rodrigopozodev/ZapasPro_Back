@@ -30,9 +30,5 @@ Thumbs.db
 *.bak
 *.tmp
 
-# SQLite database files
-*.sqlite
-*.sqlite3
-
 # Coverage folder used by tools like istanbul
 coverage/
