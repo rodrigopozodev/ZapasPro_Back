@@ -25,12 +25,12 @@ export class Stock extends Model<StockAttributes> implements StockAttributes {
 Stock.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },
         productoId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
         },
         talla: {
