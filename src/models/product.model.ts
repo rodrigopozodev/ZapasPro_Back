@@ -32,7 +32,7 @@ export class Product extends Model<ProductAttributes> implements ProductAttribut
 Product.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
