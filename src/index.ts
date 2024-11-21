@@ -16,10 +16,18 @@ const app = express();
 
 // Configuración de CORS
 app.use(cors({
-    origin: [
-        'http://localhost:4200', // Desarrollo local
-        'https://tu-sitio-en-netlify.netlify.app' // URL de Netlify
-    ],
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:4200', // Desarrollo local
+            'https://zapaspro.netlify.app' // URL de producción
+        ];
+
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
