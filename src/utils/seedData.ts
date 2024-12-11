@@ -42,10 +42,10 @@ export const insertInitialData = async () => {
       { username: 'Felipe', email: 'feliperaton@example.com', password: hashedPassword, role: 'client' },
     
       // Correos adicionales con roles específicos
-      { username: 'Sara', email: 'saraadmin@example.com', password: hashedPassword, role: 'admin' },
-      { username: 'Sara', email: 'saracliente@example.com', password: hashedPassword, role: 'client' },
-      { username: 'Irene', email: 'ireneadmin@example.com', password: hashedPassword, role: 'admin' },
-      { username: 'Irene', email: 'irenecliente@example.com', password: hashedPassword, role: 'client' }
+      { username: 'Sara', email: 'saraadmin@gmail.com', password: hashedPassword, role: 'admin' },
+      { username: 'Sara', email: 'saracliente@gmail.com', password: hashedPassword, role: 'client' },
+      { username: 'Irene', email: 'ireneadmin@gmail.com', password: hashedPassword, role: 'admin' },
+      { username: 'Irene', email: 'irenecliente@gmail.com', password: hashedPassword, role: 'client' }
     ]);
 
     console.log('Usuarios iniciales creados');
