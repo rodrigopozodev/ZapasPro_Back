@@ -11,7 +11,7 @@ export const insertInitialData = async () => {
 
     // Crear usuarios iniciales
     await User.bulkCreate([
-      { username: 'Rodrigo', email: 'superrodrigo@gmail.com', password: hashedPassword, role: 'admin' },
+      { username: 'Rodrigo', email: 'rodrigo@gmail.com', password: hashedPassword, role: 'admin' },
       { username: 'Juan', email: 'juanito123@example.com', password: hashedPassword, role: 'admin' },
       { username: 'Pedro', email: 'pedrito@example.com', password: hashedPassword, role: 'admin' },
       { username: 'Laura', email: 'laurita@example.com', password: hashedPassword, role: 'admin' },
@@ -104,48 +104,41 @@ export const insertInitialData = async () => {
     ];
 
     const createdProducts = await Product.bulkCreate(products);
-    console.log('Productos iniciales creados');
+console.log('Productos iniciales creados');
 
-    // Crear entradas de stock referenciando el id de los productos
-    const stockEntries = [];
+// Crear entradas de stock referenciando el id de los productos
+const stockEntries = [];
 
-    // Crear stock para cada producto
-    for (const product of createdProducts) {
-      let stockCount = 1000; // Stock normal
+// Función para generar una cantidad de stock aleatoria entre un mínimo y un máximo
+function getRandomStock(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-      if (product.id > 11) {
-        stockCount += (product.id - 11) * 100; // Aumenta el stock en incrementos de 100
-      }
+// Crear stock para cada producto
+for (const product of createdProducts) {
+  let baseStockCount = 1000; // Stock base
 
-      // Crear tallas de 37 a 45 para productos con ID del 1 al 10
-      if (product.id >= 1 && product.id <= 10) {
-        for (let talla = 35; talla <= 45; talla++) {
-          stockEntries.push({
-            productoId: product.id,
-            talla: talla.toString(),
-            cantidad: stockCount,
-            movimiento: 'compra' as 'compra',
-            fecha: new Date()
-          });
-        }
-      }
+  if (product.id > 11) {
+    baseStockCount += (product.id - 11) * 100; // Aumenta el stock en incrementos de 100
+  }
 
-      // Crear tallas de 46 a 48 para productos con ID del 11 en adelante
-      if (product.id >= 11) {
-        for (let talla = 46; talla <= 48; talla++) {
-          stockEntries.push({
-            productoId: product.id,
-            talla: talla.toString(),
-            cantidad: stockCount,
-            movimiento: 'compra' as 'compra',
-            fecha: new Date()
-          });
-        }
-      }
-    }
+  // Crear tallas de 36 a 45 para todos los productos
+  for (let talla = 36; talla <= 45; talla++) {
+    const stockCount = getRandomStock(100, 10000); // Genera un stock aleatorio entre 100 y 10000
 
-    await Stock.bulkCreate(stockEntries);
-    console.log('Stock inicial creado');
+    stockEntries.push({
+      productoId: product.id,
+      talla: talla.toString(),
+      cantidad: stockCount,
+      movimiento: 'compra' as 'compra' | 'venta' | 'ajuste', // Cambio aquí
+      fecha: new Date()
+    });
+  }
+}
+
+await Stock.bulkCreate(stockEntries);
+console.log('Stock inicial creado');
+
   } catch (error) {
     console.error('Error al insertar datos iniciales:', error);
   }
