@@ -101,6 +101,15 @@ export const insertInitialData = async () => {
 
       //PUMA x ONE PIECE Suede Luffy Sombrero de paja
       { name: 'PUMA x ONE PIECE Suede Luffy Sombrero de paja', price: 100, description: 'PUMA x One Piece combina los mundos del manga y el deporte, con un estilo relevante para la ropa de calle. Hemos tomado nuestra clásica zapatilla Suede y la hemos engalanado por completo para todos los que son hijos del mar. Camina con un diseño totalmente único que combina los gráficos icónicos de tu manga favorito con el estilo histórico de PUMA. ¿Listo para ir a la caza del tesoro?', imageUrl: '/img/PUMA x ONE PIECE Suede Luffy Sombrero de paja.png', gender: 'unisex', color: 'blanco', marca: 'Puma' }, // Producto 34
+
+      //adidas
+      { name: 'Adidas Handball Spezial', price: 110, description: 'La zapatilla favorita de los profesionales del balonmano en 1979 triunfa hoy en las calles gracias a su estilo atemporal. Esta versión presenta una parte superior de nobuk muy suave al tacto. La suela de goma color caramelo conserva la esencia vintage del modelo original.', imageUrl: '/img/Adidas Handball Spezial.png', gender: 'unisex', color: 'azul', marca: 'Adidas' }, // Producto 35
+
+      //reebok Reebok Club C 85.png
+      { name: 'Reebok Club C 85', price: 100, description: 'Únete al club: las zapatillas Club C 85, el modelo original, rinden homenaje a todo un clásico de la pista de tenis con un diseño elegante. La parte superior beige de nobuk presenta un atractivo minimalista, mientras que la puntera reforzada, las perforaciones y la suela de goma se inspiran en los detalles característicos del estilo.', imageUrl: '/img/Reebok Club C 85.png', gender: 'unisex', color: 'marron', marca: 'Reebok' }, // Producto 36
+
+      //Converse Chuck Taylor All Star.png
+      { name: 'Converse Chuck Taylor All Star', price: 75, description: 'Las Chuck Taylor All Star han cambiado desde su creación en 1917. Aun así, a pesar del mundo siempre cambiante de la moda y de décadas de nuevas tendencias, el icono para el día a día sigue vivo. Un diseño simple, una silueta atemporal, un inconfundible parche en el tobillo: un elemento familiar para cada versión de ti, sin importar adonde vayas.', imageUrl: '/img/Converse Chuck Taylor All Star.png', gender: 'unisex', color: 'negro', marca: 'Converse' }, // Producto 37
     ];
 
     const createdProducts = await Product.bulkCreate(products);
